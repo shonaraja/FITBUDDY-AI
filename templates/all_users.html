@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}FitBuddy | Admin Dashboard{% endblock %}
+{% block content %}
+<div class="page-head">
+    <div>
+        <p class="eyebrow">ADMIN / COACH VIEW</p>
+        <h1>All Users</h1>
+        <p>Original and feedback-updated plans are stored in SQLite.</p>
+    </div>
+    <a class="btn secondary" href="/">Home</a>
+</div>
+
+{% if not users %}
+<div class="card empty"><h2>No users yet</h2><p>Create a plan from the home page.</p></div>
+{% else %}
+<div class="table-wrap card">
+<table>
+<thead><tr><th>User</th><th>Profile</th><th>Goal</th><th>Original Plan</th><th>Updated Plan</th><th>Action</th></tr></thead>
+<tbody>
+{% for user in users %}
+{% set plan = plans.get(user.user_id) %}
+<tr>
+<td><b>{{ user.name }}</b><br><span class="muted">{{ user.user_id }}</span></td>
+<td>{{ user.age }} yrs<br>{{ user.weight }} kg<br>{{ user.intensity|title }}</td>
+<td>{{ user.goal|title }}</td>
+<td><pre class="mini">{{ plan.original_plan if plan else "—" }}</pre></td>
+<td><pre class="mini">{{ plan.updated_plan if plan and plan.updated_plan else "Not updated" }}</pre></td>
+<td>
+<form method="post" action="/delete-user/{{ user.user_id }}" onsubmit="return confirm('Delete this user and plan?')">
+<button class="btn danger" type="submit">Delete</button>
+</form>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% endif %}
+{% endblock %}

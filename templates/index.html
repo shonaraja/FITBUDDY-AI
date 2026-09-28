@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}FitBuddy | AI Workout Generator{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <p class="eyebrow">AI FITNESS PLANNER</p>
+        <h1>Your 7-day plan,<br><span>made for you.</span></h1>
+        <p>Enter your basic fitness preferences and FitBuddy will create a structured workout plan plus a nutrition or recovery tip.</p>
+    </div>
+    <form class="card form-card" method="post" action="/generate-workout">
+        <h2>Create your plan</h2>
+        {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+        <label>Name<input name="name" placeholder="Your name" required></label>
+        <label>User ID<input name="user_id" placeholder="e.g. FB001" required></label>
+        <div class="grid-2">
+            <label>Age<input name="age" type="number" min="13" max="100" required></label>
+            <label>Weight (kg)<input name="weight" type="number" step="0.1" min="20" max="500" required></label>
+        </div>
+        <label>Fitness goal
+            <select name="goal" required>
+                <option value="weight loss">Weight loss</option>
+                <option value="muscle gain">Muscle gain</option>
+                <option value="general wellness">General wellness</option>
+                <option value="flexibility">Flexibility</option>
+            </select>
+        </label>
+        <label>Workout intensity
+            <select name="intensity" required>
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+            </select>
+        </label>
+        <button class="btn primary" type="submit">Generate 7-Day Plan →</button>
+        <p class="small">Tip: Add your Gemini API key in <code>.env</code> for live AI generation.</p>
+    </form>
+</section>
+<section class="info-grid">
+    <div class="card"><b>🏋️ Workout</b><p>Day-by-day warm-up, main workout and cooldown/recovery.</p></div>
+    <div class="card"><b>🥗 Nutrition</b><p>A concise goal-aligned nutrition or recovery tip.</p></div>
+    <div class="card"><b>🔄 Feedback</b><p>Submit feedback and regenerate a revised plan.</p></div>
+</section>
+{% endblock %}
